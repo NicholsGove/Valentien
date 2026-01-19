@@ -18,8 +18,21 @@
   <div id="bg-hearts" aria-hidden="true"></div>
 
   <main id="app" class="app">
+    <!-- Screen 0: Boot Screen with 3D Heart -->
+    <section id="screen-boot" class="screen active" aria-label="Loading">
+      <div class="boot-container">
+        <div class="heart-3d">
+          <div class="heart-3d-inner">
+            <div class="heart-3d-face front">❤️</div>
+            <div class="heart-3d-face back">💖</div>
+          </div>
+        </div>
+        <div class="boot-glow"></div>
+      </div>
+    </section>
+
     <!-- Screen 1: Introduction -->
-    <section id="screen-intro" class="screen active" tabindex="0" aria-label="Introduction">
+    <section id="screen-intro" class="screen" tabindex="0" aria-label="Introduction">
       <div class="card intro-card">
         <div class="intro-text">Click here to continue ❤️</div>
       </div>
@@ -45,6 +58,11 @@
 
     <!-- Screen 3: Celebration -->
     <section id="screen-celebrate" class="screen" aria-label="Celebration">
+      <!-- Beating heart background -->
+      <div class="beating-heart-bg" aria-hidden="true">
+        <div class="beating-heart">💖</div>
+      </div>
+
       <div class="card celebrate-card">
         <h2 class="celebrate-message">You made me the happiest person ❤️</h2>
 
@@ -53,6 +71,36 @@
           <div id="confetti-container" aria-hidden="true"></div>
           <div id="sparkle-container" aria-hidden="true"></div>
           <div id="heart-burst-container" aria-hidden="true"></div>
+        </div>
+
+        <!-- Proceed Button -->
+        <button id="btn-proceed" class="btn proceed-btn" aria-label="Proceed to confirmation">
+          Proceed ✨
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 4: Confirmation -->
+    <section id="screen-confirm" class="screen" aria-label="Confirmation">
+      <div class="card confirm-card">
+        <div class="confirm-hearts" aria-hidden="true">
+          <span class="floating-emoji">💕</span>
+          <span class="floating-emoji">💖</span>
+          <span class="floating-emoji">💗</span>
+          <span class="floating-emoji">💓</span>
+        </div>
+        
+        <h2 class="confirm-title">One More Thing... 💌</h2>
+        <div class="confirm-message">
+          <p class="confirm-text">Text me:</p>
+          <p class="confirm-response">"I do Mi amor."</p>
+          <p class="confirm-text">on WhatsApp to confirm 💕</p>
+        </div>
+
+        <div class="confirm-decoration" aria-hidden="true">
+          <span class="deco-heart">❤️</span>
+          <span class="deco-heart">💖</span>
+          <span class="deco-heart">❤️</span>
         </div>
       </div>
     </section>
