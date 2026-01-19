@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Be My Valentine</title>
+
+  <!-- Google Font: Great Vibes (romantic cursive) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;display=swap" rel="stylesheet"/>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Global floating hearts background -->
+  <div id="bg-hearts" aria-hidden="true"></div>
+
+  <main id="app" class="app">
+    <!-- Screen 1: Introduction -->
+    <section id="screen-intro" class="screen active" tabindex="0" aria-label="Introduction">
+      <div class="card intro-card">
+        <div class="intro-text">Click here to continue ❤️</div>
+      </div>
+    </section>
+
+    <!-- Screen 2: The Question -->
+    <section id="screen-question" class="screen" aria-label="The Question" aria-live="polite" aria-atomic="true">
+      <div class="card question-card">
+        <h1 id="question-text" class="question-text" data-original="Will you be my Valentine?"></h1>
+
+        <div class="cta">
+          <button id="btn-yes" class="btn yes" aria-label="Yes, be your Valentine">Yes ❤️</button>
+          <button id="btn-no" class="btn no" aria-label="No">No 💔</button>
+
+          <!-- Neon arrows pointing to the Yes button (hidden until needed) -->
+          <div class="arrows" aria-hidden="true">
+            <span class="neon-arrow left" title="Click Yes"></span>
+            <span class="neon-arrow right" title="Click Yes"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Celebration -->
+    <section id="screen-celebrate" class="screen" aria-label="Celebration">
+      <div class="card celebrate-card">
+        <h2 class="celebrate-message">You made me the happiest person ❤️</h2>
+
+        <!-- Effects containers -->
+        <div id="effects">
+          <div id="confetti-container" aria-hidden="true"></div>
+          <div id="sparkle-container" aria-hidden="true"></div>
+          <div id="heart-burst-container" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Optional soft background music (muted initially; source set/played on interaction) -->
+  <audio id="bg-music" preload="none" loop muted aria-hidden="true" class="hidden">
+    <!-- The data-src will be applied to src on first user interaction to respect autoplay policies -->
+    <source id="bg-music-source" data-src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7fc2adfefd.mp3?filename=romantic-ambient-110517.mp3" type="audio/mpeg"/>
+  </audio>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
