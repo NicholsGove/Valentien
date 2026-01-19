@@ -50,13 +50,16 @@
   let isTyping = false;
   let celebrationStarted = false;
 
-  // Respect reduced motion preferences
+  // Respect reduced motion preferences and detect mobile
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const HEART_CAP = prefersReducedMotion ? 35 : 70;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    (typeof window !== 'undefined' && window.innerWidth <= 768);
+
+  const HEART_CAP = prefersReducedMotion ? 20 : (isMobile ? 30 : 70);
   let heartCount = 0;
   let heartIntervalId = null;
 
@@ -75,21 +78,24 @@
   function enableButtonInteractions(el) {
     if (!el) return;
 
-    const maxTiltX = prefersReducedMotion ? 6 : 10;
-    const maxTiltY = prefersReducedMotion ? 6 : 8;
+    const maxTiltX = prefersReducedMotion ? 6 : (isMobile ? 0 : 10);
+    const maxTiltY = prefersReducedMotion ? 6 : (isMobile ? 0 : 8);
 
-    el.addEventListener('mousemove', (e) => {
-      const rect = el.getBoundingClientRect();
-      const relX = (e.clientX - rect.left) / rect.width - 0.5;
-      const relY = (e.clientY - rect.top) / rect.height - 0.5;
-      const rotX = (-relY) * maxTiltY;
-      const rotY = relX * maxTiltX;
-      el.style.setProperty('--tilt', `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg)`);
-    });
+    // Disable tilt on mobile for better performance
+    if (!isMobile) {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const relX = (e.clientX - rect.left) / rect.width - 0.5;
+        const relY = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotX = (-relY) * maxTiltY;
+        const rotY = relX * maxTiltX;
+        el.style.setProperty('--tilt', `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg)`);
+      });
 
-    el.addEventListener('mouseleave', () => {
-      el.style.setProperty('--tilt', 'translateZ(0)');
-    });
+      el.addEventListener('mouseleave', () => {
+        el.style.setProperty('--tilt', 'translateZ(0)');
+      });
+    }
 
     el.addEventListener('click', (e) => {
       const rect = el.getBoundingClientRect();
@@ -104,8 +110,8 @@
       el.appendChild(ripple);
       ripple.addEventListener('animationend', () => ripple.remove());
 
-      // Mini hearts
-      const count = prefersReducedMotion ? 2 : 4;
+      // Mini hearts - reduced for mobile
+      const count = prefersReducedMotion ? 2 : (isMobile ? 2 : 4);
       for (let i = 0; i < count; i++) {
         const mh = document.createElement('span');
         mh.className = 'mini-heart';
@@ -166,16 +172,16 @@
   }
 
   function startBgHearts() {
-    // Initial population
-    const initialCount = prefersReducedMotion ? 18 : 40;
+    // Initial population - reduced for mobile
+    const initialCount = prefersReducedMotion ? 10 : (isMobile ? 15 : 40);
     for (let i = 0; i < initialCount; i++) {
       setTimeout(() => {
         if (heartCount < HEART_CAP) createBgHeart();
-      }, i * 100);
+      }, i * (isMobile ? 150 : 100));
     }
 
     // Fill up to cap, then stop creating more to avoid memory growth
-    const intervalMs = prefersReducedMotion ? 1400 : 800;
+    const intervalMs = prefersReducedMotion ? 1400 : (isMobile ? 1200 : 800);
     heartIntervalId = setInterval(() => {
       if (heartCount >= HEART_CAP) {
         clearInterval(heartIntervalId);
@@ -309,14 +315,14 @@
   }
 
   function startConfetti() {
-    // Initial burst
-    const burstCount = prefersReducedMotion ? 60 : 140;
+    // Initial burst - reduced for mobile
+    const burstCount = prefersReducedMotion ? 40 : (isMobile ? 70 : 140);
     for (let i = 0; i < burstCount; i++) {
-      setTimeout(createConfettiPiece, i * (prefersReducedMotion ? 12 : 8));
+      setTimeout(createConfettiPiece, i * (prefersReducedMotion ? 12 : (isMobile ? 10 : 8)));
     }
     // Continuous drizzle for a short duration
-    const drizzleInterval = setInterval(() => createConfettiPiece(), prefersReducedMotion ? 180 : 120);
-    setTimeout(() => clearInterval(drizzleInterval), prefersReducedMotion ? 6000 : 9000);
+    const drizzleInterval = setInterval(() => createConfettiPiece(), prefersReducedMotion ? 180 : (isMobile ? 200 : 120));
+    setTimeout(() => clearInterval(drizzleInterval), prefersReducedMotion ? 4000 : (isMobile ? 5000 : 9000));
   }
 
   function createSparkle() {
@@ -339,13 +345,13 @@
   }
 
   function startSparkles() {
-    // Gentle twinkles across the area
-    const initial = prefersReducedMotion ? 18 : 30;
+    // Gentle twinkles across the area - reduced for mobile
+    const initial = prefersReducedMotion ? 12 : (isMobile ? 18 : 30);
     for (let i = 0; i < initial; i++) {
-      setTimeout(createSparkle, i * 80);
+      setTimeout(createSparkle, i * (isMobile ? 100 : 80));
     }
-    const interval = setInterval(createSparkle, prefersReducedMotion ? 220 : 160);
-    setTimeout(() => clearInterval(interval), prefersReducedMotion ? 6000 : 9000);
+    const interval = setInterval(createSparkle, prefersReducedMotion ? 220 : (isMobile ? 250 : 160));
+    setTimeout(() => clearInterval(interval), prefersReducedMotion ? 4000 : (isMobile ? 5000 : 9000));
   }
 
   function createBurstHeart() {
@@ -367,13 +373,13 @@
   }
 
   function startHeartBursts() {
-    const burst = prefersReducedMotion ? 20 : 38;
+    const burst = prefersReducedMotion ? 15 : (isMobile ? 25 : 38);
     for (let i = 0; i < burst; i++) {
-      setTimeout(createBurstHeart, i * (prefersReducedMotion ? 120 : 90));
+      setTimeout(createBurstHeart, i * (prefersReducedMotion ? 120 : (isMobile ? 110 : 90)));
     }
     // A few extra
-    const extraInterval = setInterval(createBurstHeart, prefersReducedMotion ? 260 : 180);
-    setTimeout(() => clearInterval(extraInterval), prefersReducedMotion ? 5000 : 8000);
+    const extraInterval = setInterval(createBurstHeart, prefersReducedMotion ? 260 : (isMobile ? 240 : 180));
+    setTimeout(() => clearInterval(extraInterval), prefersReducedMotion ? 4000 : (isMobile ? 5000 : 8000));
   }
 
   function startCelebrationEffects() {
